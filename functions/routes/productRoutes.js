@@ -3,17 +3,17 @@ const router = require('express')
 const productsRef = require('firebase-admin')
                                 .firestore()
                                 .collection('product');
-
+const Product = require('../model/Product')
 
 router
     .route('/')
-    .get(getAllproducts)
-    .post(addNewproduct)
-    .put(updateproduct)
-    .delete(deleteproduct);
+    .get(getAllProducts)
+    .post(addNewProduct)
+    .put(updateProduct)
+    .delete(deleteProduct);
 
     
-function getAllproducts(req, res) {
+function getAllProducts(req, res) {
     productsRef
         .get()
         .then( (products) => {
@@ -21,26 +21,41 @@ function getAllproducts(req, res) {
                 success: true,
                 message: 'List of All Products Received Successfully',
                 data: {
-                    products: products.docs.map(doc => doc.data())
+                    products: products
+                                .docs
+                                .map(doc => Product
+                                    .getProductConverter()
+                                    .fromFirestore(doc))
                 }
             })
         })
         .catch( (error) => {
             return res.status(500).json({
                 success: false,
-                message: error
+                message: error.message
             })
         });
 }
 
-function addNewproduct(req,res) {
+function addNewProduct(req,res) {
+    try{
+        product = new Product(req.body.product);
+    }
+    catch(error){
+        return res.status(400).json({
+			success: false,
+			message: error.message
+		});
+    }
+
     productsRef
-        .doc(req.body.id)
-        .set(req.body)
+        .doc(product.id)
+        .withConverter(Product.getProductConverter())
+        .set(Object.assign({}, product))
         .then( () => {    
             return res.status(200).json({
                 success: true,
-                message: 'New Product Added Successfully'
+                message: 'New Product with id '+product.id+' Added Successfully'
             })   
         })
         .catch( (error) => {
@@ -51,32 +66,53 @@ function addNewproduct(req,res) {
         });
 }
 
-function updateproduct(req, res) {
+function updateProduct(req, res) {
+    try{
+        product = new Product(req.body.product);
+    }
+    catch(error){
+        return res.status(400).json({
+			success: false,
+			message: error.message
+		});
+    }
+
     productsRef
-    .doc(req.body.id)
-    .update(req.body)
-    .then( () => {
-        return res.status(200).json({
-            success: true,
-            message: 'Product Updated Successfully'
-        }) 
-    })
-    .catch( (error) => {
-        return res.status(500).json({
-            success: false,
-            message: error
-        })        
-    });
+        .doc(product.id)
+        .withConverter(Product.getProductConverter())
+        .update(Object.assign({}, product))
+        .then( () => {    
+            return res.status(200).json({
+                success: true,
+                message: 'Product with id '+product.id+' Updated Successfully'
+            })   
+        })
+        .catch( (error) => {
+            return res.status(500).json({
+                success: false,
+                message: error
+            })
+        });
 }  
 
-function deleteproduct(req, res) {
-        productsRef
-        .doc(req.body.id)
+function deleteProduct(req, res) {
+    try{
+        product = new Product(req.body.product);
+    }
+    catch(error){
+        return res.status(400).json({
+			success: false,
+			message: error.message
+		});
+    }
+    
+    productsRef
+        .doc(product.id)
         .delete()
         .then( () => {
             return res.status(200).json({
                 success: true,
-                message: 'Product Deleted Successfully'
+                message: 'Product with id '+product.id+' Deleted Successfully'
             })
         })
         .catch( (error) => {
@@ -85,7 +121,7 @@ function deleteproduct(req, res) {
                 message: error
             }) 
         });
-    }
+}
 
 
 

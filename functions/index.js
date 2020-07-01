@@ -1,8 +1,9 @@
 const admin = require('firebase-admin');
 const functions = require('firebase-functions');
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
+const app = express();
+
 app.use(bodyParser.urlencoded({extended:false}));
 
 var serviceAccount = require("../ecommerce-eed77-firebase-adminsdk-dikkn-01149939c5.json");

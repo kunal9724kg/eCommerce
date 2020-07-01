@@ -1,10 +1,11 @@
 const router = require('express')
                     .Router();
 const subCategoriesRef = require('firebase-admin')
-                                .firestore()
-                                .collection('subCategory');
+                            .firestore()
+                            .collection('subCategory');
+const SubCategory = require('../model/SubCategory')
 
-
+                            
 router
     .route('/')
     .get(getAllSubCategories)
@@ -12,7 +13,7 @@ router
     .put(updateSubCategory)
     .delete(deleteSubCategory);
 
-    
+
 function getAllSubCategories(req, res) {
     subCategoriesRef
         .get()
@@ -21,26 +22,42 @@ function getAllSubCategories(req, res) {
                 success: true,
                 message: 'List of All Sub-Categories Received Successfully',
                 data: {
-                    subCategories: subCategories.docs.map(doc => doc.data())
+                    subCategories: subCategories
+                                    .docs
+                                    .map(doc => SubCategory
+                                        .getSubCategoryConverter()
+                                        .fromFirestore(doc))
                 }
             })
         })
         .catch( (error) => {
             return res.status(500).json({
                 success: false,
-                message: error
+                message: error.message
             })
         });
 }
 
 function addNewSubCategory(req,res) {
+    try{
+        subCategory = new SubCategory(req.body.subCategory);
+    }
+    catch(error){
+        return res.status(400).json({
+			success: false,
+			message: error.message
+		});
+    }
+    
     subCategoriesRef
-        .doc(req.body.id)
-        .set(req.body)
-        .then( () => {    
+        .doc(subCategory.id)
+        .withConverter(SubCategory.getSubCategoryConverter())
+        .set(Object.assign({}, subCategory))
+        .then( () => {
+            
             return res.status(200).json({
                 success: true,
-                message: 'New Sub-Category Added Successfully'
+                message: 'New Sub-Category with id '+ subCategory.id +' Added Successfully'
             })   
         })
         .catch( (error) => {
@@ -52,31 +69,53 @@ function addNewSubCategory(req,res) {
 }
 
 function updateSubCategory(req, res) {
+    try{
+        subCategory = new SubCategory(req.body.subCategory);
+    }
+    catch(error){
+        return res.status(400).json({
+			success: false,
+			message: error.message
+		});
+    }
+
     subCategoriesRef
-    .doc(req.body.id)
-    .update(req.body)
-    .then( () => {
-        return res.status(200).json({
-            success: true,
-            message: 'Sub-Category Updated Successfully'
-        }) 
-    })
-    .catch( (error) => {
-        return res.status(500).json({
-            success: false,
-            message: error
-        })        
-    });
-}  
+        .doc(subCategory.id)
+        .withConverter(SubCategory.getSubCategoryConverter())
+        .update(Object.assign({},subCategory))
+        .then( () => {
+            return res.status(200).json({
+                success: true,
+                message: 'Sub-Category '+subCategory.id+' Updated Successfully'
+            }) 
+        })
+        .catch( (error) => {
+            console.log(error);
+            return res.status(500).json({
+                success: false,
+                message: error
+            })        
+        });
+}
 
 function deleteSubCategory(req, res) {
-        subCategoriesRef
-        .doc(req.body.id)
+    try{
+        subCategory = new SubCategory(req.body.subCategory);
+    }
+    catch(error){
+        return res.status(400).json({
+			success: false,
+			message: error.message
+		});
+    }
+
+    subCategoriesRef
+        .doc(subCategory.id)
         .delete()
         .then( () => {
             return res.status(200).json({
                 success: true,
-                message: 'Sub-Category Deleted Successfully'
+                message: 'Sub-Category '+subCategory.id+' Deleted Successfully'
             })
         })
         .catch( (error) => {
@@ -85,8 +124,8 @@ function deleteSubCategory(req, res) {
                 message: error
             }) 
         });
-    }
+}
 
 
 
-    module.exports = router;
+module.exports = router;
