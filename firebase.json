@@ -12,7 +12,8 @@
     ]
   },
   "hosting": {
-    "public": "public",
+    "public": "./webapp/build",
+    "predeploy": "cd webapp && npm run build",
     "ignore": [
       "firebase.json",
       "**/.*",
