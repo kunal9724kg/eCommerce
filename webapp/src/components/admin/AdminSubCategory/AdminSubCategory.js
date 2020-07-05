@@ -1,40 +1,71 @@
 import React, {useState, useEffect} from 'react';
-import { select } from '@material-ui/core';
-import {getSubCategories} from '../../../services/util';
+import { TextField } from '@material-ui/core';
+import {getSubCategories, getCategories} from '../../../services/util';
 
 const AdminSubCategory = () => {
-  let choseSubCategory = {
+  let chooseOption = {
     "id": "Choose",
-    "name": "Choose Sub Category"
+    "name": "Choose Option....."
   }
   let newSubCategoryOption = {
     "id": "New",
     "name": "New Sub Category"
   }
-  const [loading, setLoading] = useState(true)
-  const [subCategories, setSubCategories] = useState("Hi")
+  const [categoriesLoad, setCategoriesLoad] = useState(false)
+  const [subCategoriesLoad, setSubCategoriesLoad] = useState(false)
+  const [subCategories, setSubCategories] = useState([])
+  const [categories, setCategories] = useState([])
   const [subCategory, setSubCategory] = useState(0)
+  const [category, setCategory] = useState(null)
   
 
   async function fetchSubCategories() {
     let res = await getSubCategories()
-    if(res != null) {
-      res = [choseSubCategory].concat(res)
-      res.push(newSubCategoryOption)
-      setSubCategories(res)
-    }
-    setLoading(false)
+    res = [chooseOption].concat(res)
+    res.push(newSubCategoryOption)
+    setSubCategories(res)
+    setSubCategoriesLoad(true)
+  }
+
+  async function fetchCategories() {
+    let res = await getCategories()
+    res = [chooseOption].concat(res)
+    setCategories(res)
+    setCategoriesLoad(true)
   }
 
   useEffect(() => {
     fetchSubCategories()
+    fetchCategories()
   }, [])
 
   useEffect(() => {
-    console.log(subCategories[subCategory])
-  }, [subCategory])
+    console.log(category)
+  }, [category])
 
-  if(loading) {
+  let subCategoriesList = subCategories
+                            .map((subCategory, idx) => {
+                              return ( 
+                                <option 
+                                    key={subCategory.id} 
+                                    value={idx}>
+                                  {subCategory.name}
+                                </option>
+                              )
+                            })
+
+  let categoryList = categories
+                        .map((category, idx) => {
+                          return ( 
+                            <option  
+                                key = {idx}
+                                value={category.id}>
+                              {category.name}
+                            </option>
+                          )
+                        })
+
+  if(!categoriesLoad || !subCategoriesLoad) {
     return (
       <h1>Loading.....</h1>
     )
@@ -42,13 +73,22 @@ const AdminSubCategory = () => {
     return (
       <div>
         <select value={subCategory} onChange={(event) => setSubCategory(event.target.value)}>
-          {subCategories
-            .map((subCategory, idx) => <option 
-                                          key={subCategory.id} 
-                                          value={idx}>
-                                        {subCategory.name}
-                                      </option>)}
+          {subCategoriesList}
         </select>
+        <div>
+          <h1>Id:</h1>
+          <TextField id="outlined-basic" label="Outlined" value={subCategories[subCategory].id} variant="outlined" />
+        </div>
+        <div>
+          <h1>Name:</h1>
+          <TextField id="outlined-basic" label="Outlined" value={subCategories[subCategory].name} variant="outlined" />
+        </div>
+        <div>
+          <h1>Category:</h1>
+          <select value={subCategories[subCategory].categoryId} onChange={(event) => setCategory(event.target.value)}>
+            {categoryList}
+          </select>
+        </div>
       </div>
     )
   }
