@@ -14,7 +14,24 @@ router
 
     
 function getAllProducts(req, res) {
-    productsRef
+    product = req.query.product
+    productQueryRef = productsRef
+
+    if(product != undefined) {
+        subCategoryId = product.subCategoryId
+        if(subCategoryId != undefined) {
+            productQueryRef = productQueryRef
+                            .where("subCategoryId", "=", subCategoryId)
+        }
+
+        categoryId = product.categoryId
+        if(categoryId != undefined) {
+            productQueryRef = productQueryRef
+                            .where("categoryId", "=", categoryId)
+        }
+    }
+
+    productQueryRef
         .get()
         .then( (products) => {
             return res.status(200).json({
