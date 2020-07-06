@@ -17,15 +17,15 @@ function getAllProducts(req, res) {
     product = req.query.product
     productQueryRef = productsRef
 
-    if(product != undefined) {
+    if(product !== undefined) {
         subCategoryId = product.subCategoryId
-        if(subCategoryId != undefined) {
+        if(subCategoryId !== undefined) {
             productQueryRef = productQueryRef
                             .where("subCategoryId", "=", subCategoryId)
         }
 
         categoryId = product.categoryId
-        if(categoryId != undefined) {
+        if(categoryId !== undefined) {
             productQueryRef = productQueryRef
                             .where("categoryId", "=", categoryId)
         }
@@ -65,22 +65,22 @@ function addNewProduct(req,res) {
 		});
     }
 
-    productsRef
-        .doc(product.id)
-        .withConverter(Product.getProductConverter())
-        .set(Object.assign({}, product))
-        .then( () => {    
-            return res.status(200).json({
-                success: true,
-                message: 'New Product with id '+product.id+' Added Successfully'
-            })   
-        })
-        .catch( (error) => {
-            return res.status(500).json({
-                success: false,
-                message: error
+    return productsRef
+            .doc(product.id)
+            .withConverter(Product.getProductConverter())
+            .set(Object.assign({}, product))
+            .then( () => {    
+                return res.status(200).json({
+                    success: true,
+                    message: 'New Product with id '+product.id+' Added Successfully'
+                })   
             })
-        });
+            .catch( (error) => {
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                })
+            });
 }
 
 function updateProduct(req, res) {
@@ -94,22 +94,22 @@ function updateProduct(req, res) {
 		});
     }
 
-    productsRef
-        .doc(product.id)
-        .withConverter(Product.getProductConverter())
-        .update(Object.assign({}, product))
-        .then( () => {    
-            return res.status(200).json({
-                success: true,
-                message: 'Product with id '+product.id+' Updated Successfully'
-            })   
-        })
-        .catch( (error) => {
-            return res.status(500).json({
-                success: false,
-                message: error
+    return productsRef
+            .doc(product.id)
+            .withConverter(Product.getProductConverter())
+            .update(Object.assign({}, product))
+            .then( () => {    
+                return res.status(200).json({
+                    success: true,
+                    message: 'Product with id '+product.id+' Updated Successfully'
+                })   
             })
-        });
+            .catch( (error) => {
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                })
+            });
 }  
 
 function deleteProduct(req, res) {
@@ -123,21 +123,21 @@ function deleteProduct(req, res) {
 		});
     }
     
-    productsRef
-        .doc(product.id)
-        .delete()
-        .then( () => {
-            return res.status(200).json({
-                success: true,
-                message: 'Product with id '+product.id+' Deleted Successfully'
+    return productsRef
+            .doc(product.id)
+            .delete()
+            .then( () => {
+                return res.status(200).json({
+                    success: true,
+                    message: 'Product with id '+product.id+' Deleted Successfully'
+                })
             })
-        })
-        .catch( (error) => {
-            return res.status(500).json({
-                success: false,
-                message: error
-            }) 
-        });
+            .catch( (error) => {
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                }) 
+            });
 }
 
 
