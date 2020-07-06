@@ -18,9 +18,9 @@ function getAllSubCategories(req, res) {
     subCategory = req.query.subCategory
     subCategoriesQueryRef = subCategoriesRef
 
-    if(subCategory != undefined) {
+    if(subCategory !== undefined) {
         categoryId = subCategory.categoryId
-        if(categoryId != undefined) {
+        if(categoryId !== undefined) {
             subCategoriesQueryRef = subCategoriesQueryRef
                                         .where("categoryId", "=", categoryId)
         }
@@ -60,23 +60,23 @@ function addNewSubCategory(req,res) {
 		});
     }
     
-    subCategoriesRef
-        .doc(subCategory.id)
-        .withConverter(SubCategory.getSubCategoryConverter())
-        .set(Object.assign({}, subCategory))
-        .then( () => {
-            
-            return res.status(200).json({
-                success: true,
-                message: 'New Sub-Category with id '+ subCategory.id +' Added Successfully'
-            })   
-        })
-        .catch( (error) => {
-            return res.status(500).json({
-                success: false,
-                message: error
+    return subCategoriesRef
+            .doc(subCategory.id)
+            .withConverter(SubCategory.getSubCategoryConverter())
+            .set(Object.assign({}, subCategory))
+            .then( () => {
+                
+                return res.status(200).json({
+                    success: true,
+                    message: 'New Sub-Category with id '+ subCategory.id +' Added Successfully'
+                })   
             })
-        });
+            .catch( (error) => {
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                })
+            });
 }
 
 function updateSubCategory(req, res) {
@@ -90,23 +90,23 @@ function updateSubCategory(req, res) {
 		});
     }
 
-    subCategoriesRef
-        .doc(subCategory.id)
-        .withConverter(SubCategory.getSubCategoryConverter())
-        .update(Object.assign({},subCategory))
-        .then( () => {
-            return res.status(200).json({
-                success: true,
-                message: 'Sub-Category '+subCategory.id+' Updated Successfully'
-            }) 
-        })
-        .catch( (error) => {
-            console.log(error);
-            return res.status(500).json({
-                success: false,
-                message: error
-            })        
-        });
+    return subCategoriesRef
+            .doc(subCategory.id)
+            .withConverter(SubCategory.getSubCategoryConverter())
+            .update(Object.assign({},subCategory))
+            .then( () => {
+                return res.status(200).json({
+                    success: true,
+                    message: 'Sub-Category '+subCategory.id+' Updated Successfully'
+                }) 
+            })
+            .catch( (error) => {
+                console.log(error);
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                })        
+            });
 }
 
 function deleteSubCategory(req, res) {
@@ -120,21 +120,21 @@ function deleteSubCategory(req, res) {
 		});
     }
 
-    subCategoriesRef
-        .doc(subCategory.id)
-        .delete()
-        .then( () => {
-            return res.status(200).json({
-                success: true,
-                message: 'Sub-Category '+subCategory.id+' Deleted Successfully'
+    return subCategoriesRef
+            .doc(subCategory.id)
+            .delete()
+            .then( () => {
+                return res.status(200).json({
+                    success: true,
+                    message: 'Sub-Category '+subCategory.id+' Deleted Successfully'
+                })
             })
-        })
-        .catch( (error) => {
-            return res.status(500).json({
-                success: false,
-                message: error
-            }) 
-        });
+            .catch( (error) => {
+                return res.status(500).json({
+                    success: false,
+                    message: error
+                }) 
+            });
 }
 
 
