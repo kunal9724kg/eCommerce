@@ -15,7 +15,18 @@ router
 
 
 function getAllSubCategories(req, res) {
-    subCategoriesRef
+    subCategory = req.query.subCategory
+    subCategoriesQueryRef = subCategoriesRef
+
+    if(subCategory != undefined) {
+        categoryId = subCategory.categoryId
+        if(categoryId != undefined) {
+            subCategoriesQueryRef = subCategoriesQueryRef
+                                        .where("categoryId", "=", categoryId)
+        }
+    }
+
+    subCategoriesQueryRef
         .get()
         .then( (subCategories) => {
             return res.status(200).json({
