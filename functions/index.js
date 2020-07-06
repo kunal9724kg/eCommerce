@@ -6,7 +6,9 @@ const app = express();
 
 app.use(bodyParser.urlencoded({extended:false}));
 
-var serviceAccount = require("../ecommerce-eed77-firebase-adminsdk-dikkn-01149939c5.json");
+const serviceAccount = {
+  //firebase credential here
+}
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
