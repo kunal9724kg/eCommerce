@@ -19,6 +19,8 @@ function getAllSubCategories(req, res) {
     subCategoriesQueryRef = subCategoriesRef
 
     if(subCategory !== undefined) {
+        subCategory = JSON.parse(subCategory)
+
         categoryId = subCategory.categoryId
         if(categoryId !== undefined) {
             subCategoriesQueryRef = subCategoriesQueryRef

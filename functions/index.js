@@ -27,7 +27,7 @@ app.use('/subCategory', subCategoryRoutes);
 app.use('/product', productRoutes);
 app.use('/test', (req, res) => {
 
-    res.send("Server is running....");
+  res.send("Server is running....");
 });
 
 exports.api = functions.https.onRequest(app);
