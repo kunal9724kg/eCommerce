@@ -18,6 +18,8 @@ function getAllProducts(req, res) {
     productQueryRef = productsRef
 
     if(product !== undefined) {
+        product = JSON.parse(product)
+
         subCategoryId = product.subCategoryId
         if(subCategoryId !== undefined) {
             productQueryRef = productQueryRef
