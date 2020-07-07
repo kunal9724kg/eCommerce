@@ -11,10 +11,6 @@ class SubCategory {
         this.name = subCategory.name
         this.categoryId = subCategory.categoryId
     }
-    
-    toString() {
-        return "SubCategory [id=" + this.id + ", name=" + this.name +", categoryId= " + this.categoryId +"]";
-    }
 }
 
 module.exports = SubCategory
