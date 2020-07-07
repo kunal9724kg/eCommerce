@@ -10,9 +10,12 @@ class Category {
         this.id = category.id;
         this.name = category.name;
     }
-    
-    toString() {
-        return "Category [id=" + this.id + ", name=" + this.name + "]";
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name
+        }
     }
 }
 

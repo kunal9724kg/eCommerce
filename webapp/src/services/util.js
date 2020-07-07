@@ -3,9 +3,15 @@ import {GET_SUB_CATEGORIES, GET_CATEGORIES} from '../api/util';
 import SubCategory from '../model/SubCategory';
 import Category from '../model/Category';
 
-export function getSubCategories() {
+export function getSubCategories(category) {
+    const params = {
+      subCategory : {
+        categoryId: category
+      }
+    }
+
     return axios
-            .get(GET_SUB_CATEGORIES.url)
+            .get(GET_SUB_CATEGORIES.url, {params: params})
             .then(res => {
                 const success = res.data.success
                 if(success === false)
