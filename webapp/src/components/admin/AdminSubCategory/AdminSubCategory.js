@@ -59,7 +59,11 @@ const AdminSubCategory = () => {
 
   useEffect(() => {
     if(categoryId !== SelectElements.chooseOption.id && categoryId !== SelectElements.newSubCategoryOption.id) {
-      if (subCategoryId !== SelectElements.chooseOption.id && subCategoryId !== SelectElements.newSubCategoryOption.id) {
+      if (subCategoryId !== SelectElements.chooseOption.id) {
+        if(subCategoryId === SelectElements.newSubCategoryOption) {
+          setSubCategoryShow({})
+          return;
+        }
         const subCat = subCategories.find(obj => obj.id === subCategoryId)
         setSubCategoryShow(subCat)
         return;

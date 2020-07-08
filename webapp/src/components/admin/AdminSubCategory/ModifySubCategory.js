@@ -1,4 +1,7 @@
 import React, {useState, useEffect} from 'react';
+import {Button} from "@material-ui/core";
+import {addSubCategory, deleteSubCategory, updateSubCategory} from '../../../services/admin';
+import SelectElements from "../../../constant/SelectElements";
 
 const ModifySubCategory = (props) => {
   const [subCategoryOld, setSubCategoryOld] = useState({...props.subCategory})
@@ -20,8 +23,25 @@ const ModifySubCategory = (props) => {
     setSubCategoryNew(subCategoryNew => ({...subCategoryNew, [name]: value}))
   }
 
-  if(subCategoryOld == null || Object.keys(subCategoryOld).length === 0
-  ) {
+  function handleUpdate() {
+      if(subCategoryNew.categoryId !== SelectElements.chooseOption.id) {
+        updateSubCategory(subCategoryNew)
+      }
+  }
+
+  function handleDelete() {
+    if(subCategoryNew.categoryId !== SelectElements.chooseOption.id) {
+      deleteSubCategory(subCategoryNew)
+    }
+  }
+
+  function handleAdd() {
+    if(subCategoryNew.categoryId !== SelectElements.chooseOption.id) {
+      addSubCategory(subCategoryNew)
+    }
+  }
+  
+  if(subCategoryOld == null || Object.keys(subCategoryOld).length === 0) {
     return (
       <div>
         Choose Category and SubCategory......
@@ -50,6 +70,17 @@ const ModifySubCategory = (props) => {
                   </option>
                 )})}
           </select>
+        </div>
+        <div>
+          <Button variant="contained" color="primary" onClick={handleAdd}>
+            Add
+          </Button>
+          <Button variant="contained" color="primary" onClick={handleUpdate}>
+            Update
+          </Button>
+          <Button variant="contained" color="primary" onClick={handleDelete}>
+            Delete
+          </Button>
         </div>
       </div>
     )
