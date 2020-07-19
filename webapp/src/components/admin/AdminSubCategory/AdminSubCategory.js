@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {getSubCategories, getCategories} from '../../../services/util';
+import {getSubCategories, getCategories, getProducts} from '../../../services/util';
 import SelectElements from '../../../constant/SelectElements';
 import ModifySubCategory from "./ModifySubCategory";
 
@@ -82,7 +82,7 @@ const AdminSubCategory = () => {
         </div>
 
         <div>
-          <select value={subCategoryId} onChange={(event) => setSubCategoryId(event.target.value)}>
+          <select value={subCategoryId} onChange={(event) => console.log(event.target.value)}>
             {subCategoriesList}
           </select>
         </div>
