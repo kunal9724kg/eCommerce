@@ -18,6 +18,7 @@ export function getProducts(subCategory){
                 if(success === false)
                     return [];
                 try {
+                    console.log(res.data)
                     return res
                             .data   
                             .data

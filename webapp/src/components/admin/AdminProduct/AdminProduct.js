@@ -9,15 +9,16 @@ function AdminProduct() {
   const [ products, setProducts ] = useState([
                                         SelectElements.chooseOption,
                                         SelectElements.newProductOption]) 
-  const [ categoryId, setCategoryId] = useState([SelectElements.chooseOption.id])
-  const [ subCategoryId, setSubCategoryId] = useState([SelectElements.chooseOption.id])
-  const [ productId, setproductId] = useState([SelectElements.chooseOption.id])
+  const [ categoryId, setCategoryId] = useState(SelectElements.chooseOption.id)
+  const [ subCategoryId, setSubCategoryId] = useState(SelectElements.chooseOption.id)
+  const [ productId, setproductId] = useState(SelectElements.chooseOption.id)
   const [ subCategoryShow, setSubCategoryShow] = useState(null)
   const [ productShow, setProductShow] = useState(null)
   
   async function fetchProducts(subCategory) {
     let res = await getProducts(subCategory)
     res = [SelectElements.chooseOption].concat(res)
+    console.log(res);
     res.push(SelectElements.newProductOption)
     setProducts(res)
   }
@@ -25,7 +26,6 @@ function AdminProduct() {
   async function fetchSubCategories(category) {
     let res = await getSubCategories(category)
     res = [SelectElements.chooseOption].concat(res)
-    res.push(SelectElements.newSubCategoryOption)
     setSubCategories(res)
   }
 
@@ -41,13 +41,13 @@ function AdminProduct() {
 
   useEffect (() => {
     setSubCategoryId(SelectElements.chooseOption.id)
-    setSubCategoryId([SelectElements.chooseOption])
+    setSubCategories([SelectElements.chooseOption])
     fetchSubCategories(categoryId)
   }, [categoryId])
 
   useEffect(() => {
     setproductId(SelectElements.chooseOption.id)
-    setproductId([SelectElements.chooseOption])
+    setProducts([SelectElements.chooseOption, SelectElements.newProductOption])
     fetchProducts(subCategoryId)
   }, [subCategoryId])
 
@@ -84,21 +84,6 @@ function AdminProduct() {
                             )
                           })
   
-useEffect(() => {
-  if(categoryId !== SelectElements.chooseOption.id && categoryId !== SelectElements.newSubCategoryOption.id){
-    if(subCategoryId !== SelectElements.chooseOption.id){
-      if(subCategoryId === SelectElements.newSubCategoryOption){
-        setSubCategoryShow({})
-        return;
-      }
-      const subCat = subCategories.find(obj => obj.id === subCategoryId)
-      console.log(subCat)
-      setSubCategoryShow(subCat)
-      return;
-    }
-  }
-  setSubCategoryShow(null)
-}, [subCategoryId])
 
 useEffect(() => {
   if(subCategoryId !== SelectElements.chooseOption.id && subCategoryId !== SelectElements.newSubCategoryOption.id){
@@ -137,7 +122,7 @@ return (
     </div>
     <div></div>
     <div></div>
-    <ModifyProduct product = {productShow} subCategory ={subCategoryId} categories ={categoryId}/>
+    <ModifyProduct product = {productShow} subCategory = {subCategoryId} category = {categoryId}/>
   </div>
 )
 

@@ -82,7 +82,7 @@ const AdminSubCategory = () => {
         </div>
 
         <div>
-          <select value={subCategoryId} onChange={(event) => console.log(event.target.value)}>
+          <select value={subCategoryId} onChange={(event) => setSubCategoryId(event.target.value)}>
             {subCategoriesList}
           </select>
         </div>

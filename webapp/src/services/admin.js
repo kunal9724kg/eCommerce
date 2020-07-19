@@ -34,7 +34,7 @@ export function deleteProduct(product){
 export function addProduct(product){
   product = new Product(product)
   axios
-      .put(PRODUCT_API.ADD.url, {product: product})
+      .put(PRODUCT_API.ADD.url, {product : product})
       .then((res) => {
         return res.data
       })

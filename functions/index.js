@@ -11,7 +11,7 @@ app.use(cors({ origin: true }));
 
 const serviceAccount = 
 {
-  //firebase credentials
+//firebaseCredentials
 }
 
 

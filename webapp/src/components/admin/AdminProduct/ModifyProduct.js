@@ -6,30 +6,16 @@ import {getSubCategories} from  '../../../services/util' ;
 
 const ModifyProduct = (props) => {
     const [productOld, setProductOld] = useState({...props.product})
-    const [productNew, setProductNew] = useState({...props.product})
-    const [categories, setCategories] = useState({...props.categories})
-    const [subCategories, setSubCategories] = useState({...props.subCategory})
+    const [productNew, setProductNew] = useState(null)
+
     //const [subCategoriesList, setSubCategoriesList] = useState([SelectElements.chooseOption.name])
 
     useEffect(() => {
         console.log(props)
         setProductOld(props.product)
-        setProductNew(props.product)
-        setSubCategories(props.subCategory)
-        setCategories(props.categories)
-        //console.log(categories)
-        console.log(subCategories)
+        setProductNew(productNew => ({...productNew, 'categoryId' : props.category}))
+        setProductNew(productNew => ({...productNew, 'subCategoryId' : props.subCategory}))
     }, [props.product])
-
-    useEffect(() => {
-        setCategories(props.categories)
-    }, [props.categories])
-
-    useEffect(() =>{
-        setSubCategories(props.subCategories)
-        console.log(subCategories)
-    }, [props.subCategories])
-
 
     function onChange(e){
         const {name, value} =e.target
