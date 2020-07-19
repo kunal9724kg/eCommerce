@@ -10,7 +10,10 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors({ origin: true }));
 
 const serviceAccount = 
-{/*FIREBASE_CREDENTIAL*/}
+{
+//firebaseCredentials
+}
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

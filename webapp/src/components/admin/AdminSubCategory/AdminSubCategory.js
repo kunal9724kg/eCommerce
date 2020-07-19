@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {getSubCategories, getCategories} from '../../../services/util';
+import {getSubCategories, getCategories, getProducts} from '../../../services/util';
 import SelectElements from '../../../constant/SelectElements';
 import ModifySubCategory from "./ModifySubCategory";
 

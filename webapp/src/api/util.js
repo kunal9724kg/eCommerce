@@ -9,3 +9,8 @@ export const GET_CATEGORIES = {
     url: API_PREFIX + '/category',
     method: 'GET'
 }
+
+export const GET_PRODUCTS = {
+    url: API_PREFIX + '/product',
+    method: 'GET'
+}

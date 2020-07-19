@@ -1,7 +1,34 @@
 import axios from 'axios';
-import {GET_SUB_CATEGORIES, GET_CATEGORIES} from '../api/util';
+import {GET_SUB_CATEGORIES, GET_CATEGORIES, GET_PRODUCTS} from '../api/util';
 import SubCategory from '../model/SubCategory';
 import Category from '../model/Category';
+import Product from '../model/Product';
+
+export function getProducts(subCategory){
+    const params = {
+        product : {
+            subCategoryId : subCategory
+        }
+    }
+
+    return axios
+            .get(GET_PRODUCTS.url, {params: params})
+            .then(res => {
+                const success = res.data.success
+                if(success === false)
+                    return [];
+                try {
+                    console.log(res.data)
+                    return res
+                            .data   
+                            .data
+                            .products
+                            .map(product => new Product(product))
+                } catch(error){
+                    return []
+                }
+            })
+}
 
 export function getSubCategories(category) {
     const params = {
